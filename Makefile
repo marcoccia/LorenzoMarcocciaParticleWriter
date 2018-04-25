@@ -1,5 +1,5 @@
   UTILDIR := util/
-  INCLUDEDIR := MySimpleMC/
+  INCLUDEDIR := LorenzoMarcocciaParticleWriter/
   SRC_DIR := src/
   OBJ_DIR := obj/
   SRC_FILES := $(wildcard $(SRC_DIR)/*.cxx)
@@ -16,11 +16,14 @@
   # this is needed to create the bin directory if it doesn't exist
   _dummy := $(shell mkdir -p bin/ obj/)
 
-  all: runMC
+  all: runMC FirstParticleExercise
   
   runMC: $(OBJ_FILES)
 	$(CC) $(CFLAGS) -o bin/$@ $^ $(UTILDIR)/$@.cxx `root-config --libs`
-  
+
+  FirstParticleExercise: $(OBJ_FILES)
+	$(CC) $(CFLAGS) -o bin/$@ $^ $(UTILDIR)/$@.cxx `root-config --libs`
+		
   $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cxx
 	$(CC) $(CFLAGS) -c -o $@ $<
 

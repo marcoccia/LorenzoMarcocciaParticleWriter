@@ -24,6 +24,9 @@ class LorentzMomentum{
 		double getBeta() const;
 		double getGamma() const;
 		void Print() const;
+                
+                LorentzMomentum operator+(LorentzMomentum &c);
+                double operator*(LorentzMomentum &d);
 	
 	private:
 		double m_px,m_py,m_pz,m_mass;

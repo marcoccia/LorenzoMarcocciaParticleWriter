@@ -46,6 +46,18 @@ double LorentzMomentum::getGamma() const
 	return gamma;
 }
 
+LorentzMomentum LorentzMomentum::operator+(LorentzMomentum &c)
+{
+    LorentzMomentum out2= LorentzMomentum(m_px+c.getPX(), m_py+c.getPY(), m_pz+c.getPZ(), m_mass+c.getMass() );
+    return out2;
+}
+
+double LorentzMomentum::operator*(LorentzMomentum &d)
+{
+    double out3= double(sqrt(pow(m_mass,2)+pow(m_px,2)+pow(m_py,2)+pow(m_pz,2))*d.getE() - m_px*d.getPX() - m_py*d.getPY() - m_pz*d.getPZ());
+    return out3;
+}
+
 void LorentzMomentum::Print() const
 {
 	cout<<"LorMom px="<<m_px<<" py="<<m_py<<" pz="<<m_pz<<" mass "<<m_mass<<" energy "<<getE()<<endl;
