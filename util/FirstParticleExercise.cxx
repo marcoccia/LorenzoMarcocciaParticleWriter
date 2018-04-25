@@ -18,31 +18,31 @@ using namespace std;
 
 int main()
 {
-    TFile *f = new TFile("myfile.root","UPDATE");	
+    TFile *f = new TFile("file.root","RECREATE");	
     TTree *particle[3];
 	
-    particle[0] = new TTree ("Electrons", "Electrons");
-    particle[1] = new TTree ("Muons", "Muons");
-    particle[2] = new TTree ("Pions", "Pions");
+    particle[0] = new TTree ("electrons", "electrons");
+    particle[1] = new TTree ("muons", "muons");
+    particle[2] = new TTree ("mions", "pions");
 	
     float px, py, pz, m;
-    int ID, charge;
+    int pid, charge;
 	
     for (int i=0; i<=2; i++){
-        particle[i]->Branch("ID",     &ID,     "ID/I");
+        particle[i]->Branch("pid",    &pid,    "pid/I");
         particle[i]->Branch("charge", &charge, "charge/I");
-        particle[i]->Branch("px",     &px,     "eta/F"); 
-        particle[i]->Branch("py",     &py,     "phi/F"); 
-        particle[i]->Branch("pz",     &pz,     "pt/F"); 
+        particle[i]->Branch("px",     &px,     "px/F"); 
+        particle[i]->Branch("py",     &py,     "py/F"); 
+        particle[i]->Branch("pz",     &pz,     "pz/F"); 
         particle[i]->Branch("m",      &m,      "m/F");        
-	}
-    
-    ifstream myfile ("/data/Tutorial_lorenzo_05/myFirstRepository/particle_list.txt");
+    }
+
+    int rowcount=0;
+    ifstream myfile ("/data/Tutorial_lorenzo_05/LorenzoMarcocciaParticleWriter/particle_list.txt");
     string line, type_string, charge_string, px_string, py_string, pz_string;
     vector <string> v;
-    int rowcount=0;
-    
-    if (myfile.is_open()){
+
+     if (myfile.is_open()){
 		
         while ( getline (myfile,line) ){
             rowcount++;
@@ -56,49 +56,52 @@ int main()
                 py_string     = v[3];
                 pz_string     = v[4];
             
-                if ( type_string=="electron") {
+                if (type_string=="electron") {
                     myElectron *electron = new myElectron(atof(px_string.c_str()), atof(py_string.c_str()), atof(pz_string.c_str()), atof(charge_string.c_str()) );
-                    ID = 0;
+                    pid = 0;
                     m  = electron->getMass();
                     px = electron->getPX();
                     py = electron->getPY();
                     pz = electron->getPZ();
                     charge = electron->getCharge();
-//                     delete electron;
+                    particle[0]->Fill();
                 }
-                if ( type_string=="muon" ) {
+                else if (type_string=="muon" ) {
                     myMuon *muon = new myMuon(atof(px_string.c_str()), atof(py_string.c_str()), atof(pz_string.c_str()), atof(charge_string.c_str()) );
-                    ID = 1;
+                    pid = 1;
                     m  = muon->getM();
                     px = muon->getPX();
                     py = muon->getPY();
                     pz = muon->getPZ();
                     charge = muon->getCharge();
-                    delete muon;
+                    particle[1]->Fill();
                  }
-                 if ( type_string=="pion" ) {
+                 else if (type_string=="pion" ) {
                     myPion *pion = new myPion(atof(px_string.c_str()), atof(py_string.c_str()), atof(pz_string.c_str()), atof(charge_string.c_str()) );
-                    ID = 2;
+                    pid = 2;
                     m  = pion->getMass();
                     px = pion->getPX();
                     py = pion->getPY();
                     pz = pion->getPZ();
                     charge = pion->getCharge();
-//                     delete pion;
+                    particle[2]->Fill();
                  }
-            }
+            } 
         }
-            f->Close();	
-            
-    
+         
+        myfile->Close();
+
     }
     else cout<<" FILE NOT FOUND"<<endl;
+ //   STORE TREES
+     for (int j=0; j<=2; j++){
+ 	particle[j]->Write("",TObject::kOverwrite);
+     }
     
-    // STORE TREES
-    for (int i=0; i<=2; i++){
-	particle[i]->Write("",TObject::kOverwrite);
+    // DELETE
+    delete f;
+     for (int k=0; k<=2; k++){
+	delete particle[k];
     }
-    
-    
     return 0;
 }
