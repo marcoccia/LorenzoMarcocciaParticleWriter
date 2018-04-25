@@ -38,7 +38,7 @@ int main()
     }
 
     int rowcount=0;
-    ifstream myfile ("/data/Tutorial_lorenzo_05/LorenzoMarcocciaParticleWriter/particle_list.txt");
+	ifstream myfile ("particle_list.txt");
     string line, type_string, charge_string, px_string, py_string, pz_string;
     vector <string> v;
 
@@ -89,7 +89,7 @@ int main()
             } 
         }
          
-        myfile->Close();
+        myfile.close();
 
     }
     else cout<<" FILE NOT FOUND"<<endl;
@@ -98,10 +98,5 @@ int main()
  	particle[j]->Write("",TObject::kOverwrite);
      }
     
-    // DELETE
-    delete f;
-     for (int k=0; k<=2; k++){
-	delete particle[k];
-    }
     return 0;
 }
