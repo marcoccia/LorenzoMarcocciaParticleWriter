@@ -16,13 +16,16 @@
   # this is needed to create the bin directory if it doesn't exist
   _dummy := $(shell mkdir -p bin/ obj/)
 
-  all: runMC FirstParticleExercise
+  all: runMC FirstParticleExercise treeAnalysis
   
   runMC: $(OBJ_FILES)
 	$(CC) $(CFLAGS) -o bin/$@ $^ $(UTILDIR)/$@.cxx `root-config --libs`
 
   FirstParticleExercise: $(OBJ_FILES)
 	$(CC) $(CFLAGS) -o bin/$@ $^ $(UTILDIR)/$@.cxx `root-config --libs`
+
+  treeAnalysis: $(OBJ_FILES)
+	$(CC) $(CFLAGS) -o bin/$@ $^ $(UTILDIR)/$@.cxx `root-config --libs`	
 		
   $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cxx
 	$(CC) $(CFLAGS) -c -o $@ $<

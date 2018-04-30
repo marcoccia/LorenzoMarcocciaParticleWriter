@@ -1,3 +1,4 @@
 # exclude executables and objects
 bin/*
 obj/*
+macros/*

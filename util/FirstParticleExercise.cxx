@@ -23,9 +23,9 @@ int main()
 	
     particle[0] = new TTree ("electrons", "electrons");
     particle[1] = new TTree ("muons", "muons");
-    particle[2] = new TTree ("mions", "pions");
+    particle[2] = new TTree ("pions", "pions");
 	
-    float px, py, pz, m;
+    float px, py, pz, m, e;
     int pid, charge;
 	
     for (int i=0; i<=2; i++){
@@ -34,7 +34,8 @@ int main()
         particle[i]->Branch("px",     &px,     "px/F"); 
         particle[i]->Branch("py",     &py,     "py/F"); 
         particle[i]->Branch("pz",     &pz,     "pz/F"); 
-        particle[i]->Branch("m",      &m,      "m/F");        
+        particle[i]->Branch("m",      &m,      "m/F");   
+		particle[i]->Branch("e",      &e,      "e/F");   
     }
 
     int rowcount=0;
@@ -42,6 +43,8 @@ int main()
     string line, type_string, charge_string, px_string, py_string, pz_string;
     vector <string> v;
 
+	std::cout<<"Reading events2.dat and writing trees on myFile.root ......"<< std::endl;
+	
      if (myfile.is_open()){
 		
         while ( getline (myfile,line) ){
@@ -64,6 +67,7 @@ int main()
                     py = electron->getPY();
                     pz = electron->getPZ();
                     charge = electron->getCharge();
+					e = electron->getE();
                     particle[0]->Fill();
                 }
                 else if (type_string=="muon" ) {
@@ -74,6 +78,7 @@ int main()
                     py = muon->getPY();
                     pz = muon->getPZ();
                     charge = muon->getCharge();
+					e = muon->getE();
                     particle[1]->Fill();
                  }
                  else if (type_string=="pion" ) {
@@ -84,6 +89,7 @@ int main()
                     py = pion->getPY();
                     pz = pion->getPZ();
                     charge = pion->getCharge();
+					e = pion->getE();
                     particle[2]->Fill();
                  }
             } 
@@ -97,6 +103,6 @@ int main()
      for (int j=0; j<=2; j++){
  	particle[j]->Write("",TObject::kOverwrite);
      }
-    
+    f->Close();
     return 0;
 }
