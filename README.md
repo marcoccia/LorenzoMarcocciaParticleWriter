@@ -11,7 +11,7 @@ I. Several useful file list
 setup.sh                    setup ATLAS environment (needed only if you use Rome2 farm)
 particle_list.txt           contains data to analysize
 FirstParticleExercise.cxx   reads data and makes ntuples
-treeAnalysis.C			    reads ntuples and makes distributions and fits
+treeAnalysis.cxx			reads ntuples and makes distributions and fits
 executeAll.sh               executes all the .C files
 
 II. How to Run
@@ -37,9 +37,9 @@ III. Diagram
 			                        |
 			                        |                          
 			                        |
-			               |------------------|
-			               |  treeAnalysis.C  |
-			               |------------------|
+		                 |--------------------|
+		                 |  treeAnalysis.cxx  |
+		                 |--------------------|
 			                        |
 			                        |                          
 			                        |
